@@ -8,6 +8,8 @@ set debugCleanupDays=14
 set tpsMeasureSeconds=5
 set logFile=McTPSMon.log
 set tempFile=output.tmp
+set notifyAdmin=RandomBit
+set notifyTpsBelow=19
 
 :: Get players
 mcrcon -p %rconPassword% "list" > %tempFile%
@@ -23,6 +25,9 @@ for /f "tokens=2 delims=(," %%i in (%tempFile%) do set tps=%%i
 
 :: Output to log
 echo %date:~3,12% %time:~0,5% %tps% (%count%: %players:~1%)>> %logFile%
+
+:: Notify admin
+if %tps% lss %notifyTpsBelow% mcrcon -p %rconPassword% "tellraw %notifyAdmin% {\"text\":\"TPS %tps%\",\"color\":\"red\"}" > %tempFile%
 
 :: Cleanup
 :end
