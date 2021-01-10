@@ -1,17 +1,8 @@
 @echo off
 setlocal
 
-:: Config
-set rconPassword=RCON_PASSWORD
-set debugPath=D:\MinecratServer\debug
-set debugCleanupDays=14
-set tpsMeasureSeconds=5
-set logFile=McTPSMon.log
-set tempFile=output.tmp
-set notifyAdmin=ADMIN_PLAYER_NAME
-set notifyTpsBelow=19
-set pushoverAppToken=PUSHOVER_APP_TOKEN
-set pushoverUserKey=PUSHOVER_USER_KEY
+:: Load config
+for /f %%a in (McTPSMon-config.ini) do set %%a
 
 :: Get players
 mcrcon -p %rconPassword% "list" > %tempFile%
@@ -25,7 +16,8 @@ timeout /t %tpsMeasureSeconds% >nul
 mcrcon -p %rconPassword% "debug stop" > %tempFile%
 for /f "tokens=2 delims=(," %%i in (%tempFile%) do set tps=%%i
 
-:: Output to log
+:: Output to console/log
+echo %date:~3,12% %time:~0,5% %tps% (%count%: %players:~1%)
 echo %date:~3,12% %time:~0,5% %tps% (%count%: %players:~1%)>> %logFile%
 
 :: Notify admin (in game)
