@@ -32,6 +32,8 @@ if %tps% lss %notifyTpsBelow% ^
   --form-string "message=TPS: %tps%" ^
   https://api.pushover.net/1/messages.json >nul
 
+goto :eof
+
 :server_empty
 echo Server empty
 goto cleanup
@@ -43,6 +45,6 @@ del %tempFile%
 goto :eof
 
 :output
-echo %1
-echo %date:~3,12% %time:~0,5% %1>> %logFile%
+echo %~1
+echo %date:~3,12% %time:~0,5% %~1>> %logFile%
 goto :eof
