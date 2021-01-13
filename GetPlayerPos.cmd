@@ -8,7 +8,7 @@ set posx=
 set posy=
 set posz=
 
-%rcon% list
+mcrcon.exe list
 
 :getPlayerPos
 for /f "tokens=7" %%a in ('mcrcon.exe "data get entity %1 Dimension"') do set dim=%%a
