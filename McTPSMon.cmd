@@ -4,19 +4,20 @@ setlocal
 :: Load config
 for /f %%a in (McTPSMon-config.ini) do set %%a
 
+:: Test rcon
+mcrcon.exe -s list
+
 :: Get players
-mcrcon -p %rconPassword% "list" > %tempFile%
-for /f "tokens=3" %%i in (%tempFile%) do set count=%%i
+for /f "tokens=3" %%i in ('mcrcon.exe list') do set count=%%i
 if %count% equ 0 goto server_empty
-for /f "tokens=2 delims=:" %%i in (%tempFile%) do set players=%%i
+for /f "tokens=2 delims=:" %%i in ('mcrcon.exe list') do set players=%%i
 set players=%players:~1%
 set players=%players:,=%
 
 :: Get TPS
-mcrcon -p %rconPassword% -s "debug start"
+mcrcon.exe -s "debug start"
 timeout /t %tpsMeasureSeconds% >nul
-mcrcon -p %rconPassword% "debug stop" > %tempFile%
-for /f "tokens=2 delims=(," %%i in (%tempFile%) do set tps=%%i
+for /f "tokens=2 delims=(," %%i in ('mcrcon.exe "debug stop"') do set tps=%%i
 
 :: Get players locations
 call :foreach getPlayerPos %players%
@@ -26,7 +27,7 @@ call :output "%tps% [%count%:%playersstring%]"
 
 :: Notify admin (in game)
 if %tps% lss %notifyTpsBelow% ^
-  mcrcon -p %rconPassword% -s ^
+  mcrcon.exe -s ^
   "tellraw %notifyAdmin% {\"text\":\"TPS %tps%\",\"color\":\"red\"}"
 
 :: Pushover notification
@@ -37,7 +38,7 @@ if %tps% lss %notifyTpsBelow% ^
   --form-string "message=TPS: %tps%" ^
   https://api.pushover.net/1/messages.json >nul
 
-goto cleanup
+goto :eof
 
 :foreach
 if "%2"=="" goto :eof
@@ -46,7 +47,6 @@ shift /2
 goto foreach
 
 :getPlayerPos
-set MCRCON_PASS=password
 call GetPlayerPos.cmd %~1
 set playersstring=%playersstring% %~1(%dim% %posx% %posy% %posz%)
 goto :eof
@@ -58,7 +58,6 @@ goto cleanup
 :cleanup
 forfiles /p %debugPath% /m profile-results-*.txt /d -%cleanupAgeDays% ^
   /c "cmd /c del @file" >nul 2>&1
-del %tempFile%
 goto :eof
 
 :output
