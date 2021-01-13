@@ -44,5 +44,5 @@ echo Usage: GetPlayerPos.cmd ^<player name^>
 goto :eof
 
 :playernotfound
-echo Player not found
+echo Player %1 not found
 goto :eof
