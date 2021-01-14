@@ -32,11 +32,7 @@ if %tps% lss %notifyTpsBelow% ^
 
 :: Pushover notification
 if %tps% lss %notifyTpsBelow% ^
-  curl -s ^
-  --form-string "token=%pushoverAppToken%" ^
-  --form-string "user=%pushoverUserKey%" ^
-  --form-string "message=TPS: %tps%" ^
-  https://api.pushover.net/1/messages.json >nul
+  call PushoverNotification.cmd "TPS: %tps%"
 
 goto :eof
 
