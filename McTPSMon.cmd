@@ -44,7 +44,7 @@ goto foreach
 
 :getPlayerPos
 call GetPlayerPos.cmd %~1
-set playersstring=%playersstring% %~1(%dim% %posx% %posy% %posz%)
+set playersstring=%playersstring% %~1(%dim%:%posx%,%posy%,%posz%)
 goto :eof
 
 :server_empty
