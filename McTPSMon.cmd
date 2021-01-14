@@ -2,7 +2,7 @@
 setlocal
 
 :: Load config
-for /f %%a in (McTPSMon-config.ini) do set %%a
+for /f %%a in (config.ini) do set %%a
 
 :: Test rcon
 mcrcon.exe -s list
