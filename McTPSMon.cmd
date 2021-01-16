@@ -1,7 +1,7 @@
 @echo off
-setlocal
 
 :: Load config
+setlocal
 for /f %%a in (config.ini) do set %%a
 
 :: Test rcon
