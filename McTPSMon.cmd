@@ -16,7 +16,7 @@ mcrcon.exe -s list
 
 :: Get player count
 for /f "tokens=3" %%i in ('mcrcon.exe list') do set count=%%i
-echo %yy%,%mm%,%dd%,%h%,%m%,%count%>> %UserCountDB%
+echo %yy%,%mm%,%dd%,%h%,%m%,%count% >> %UserCountDB%
 if %count% equ 0 goto server_empty
 
 :: Get players
