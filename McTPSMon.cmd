@@ -4,12 +4,22 @@
 setlocal
 for /f %%a in (config.ini) do set %%a
 
+:: Date/Time vars
+set yy=%date:~11,2%
+set mm=%date:~6,2%
+set dd=%date:~3,2%
+set h=%time:~0,2%
+set m=%time:~3,2%
+
 :: Test rcon
 mcrcon.exe -s list
 
-:: Get players
+:: Get player count
 for /f "tokens=3" %%i in ('mcrcon.exe list') do set count=%%i
+echo %yy%,%mm%,%dd%,%h%,%m%,%count%>> %UserCountDB%
 if %count% equ 0 goto server_empty
+
+:: Get players
 for /f "tokens=2 delims=:" %%i in ('mcrcon.exe list') do set players=%%i
 set players=%players:~1%
 set players=%players:,=%
