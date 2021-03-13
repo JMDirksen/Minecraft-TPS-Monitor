@@ -21,7 +21,7 @@ timeout /t %ppMeasureSeconds% >nul
 for /f "tokens=4" %%i in ('mcrcon.exe "time query gametime"') do set gt2=%%i
 set /a ticks = %gt2% - %gt1%
 set /a pp = %ticks% * 5 / %ppMeasureSeconds%
-echo Performance%% %pp%
+echo %pp%%%
 
 :: Get player count
 for /f "tokens=3" %%i in ('mcrcon.exe list') do set count=%%i
