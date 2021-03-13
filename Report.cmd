@@ -61,4 +61,4 @@ echo Month average: %monthavg% >> %Report%
 echo Year average:  %yearavg% >> %Report%
 
 type %Report%
-timeout /t 60
+pause

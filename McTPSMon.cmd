@@ -14,6 +14,7 @@ set m=%time:~3,2%
 
 :: Test rcon
 mcrcon.exe -s list
+if not %errorlevel%==0 goto error
 
 :: Get performance%
 for /f "tokens=4" %%i in ('mcrcon.exe "time query gametime"') do set gt1=%%i
@@ -63,6 +64,11 @@ goto :eof
 
 :server_empty
 echo Server empty
+goto :eof
+
+:error
+echo Error!
+timeout /t 10
 goto :eof
 
 :output
